@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bitcoin Investor's Blueprint - Your Guide to Financial Freedom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #f7931a 0%, #ff6b35 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .hero .urgency {
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #00d084;
+            color: white;
+            padding: 20px 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,208,132,0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,208,132,0.5);
+        }
+        
+        /* Problem Section */
+        .problem {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .problem h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 50px;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .problem-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .problem-card h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        /* Opportunity Section */
+        .opportunity {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .opportunity h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f7931a;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        /* Solution Section */
+        .solution {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .solution h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+        }
+        
+        .ebook-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 50px;
+        }
+        
+        .ebook-cover {
+            background: linear-gradient(135deg, #f7931a 0%, #ff6b35 100%);
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(247,147,26,0.3);
+        }
+        
+        .ebook-cover h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .ebook-cover .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+        }
+        
+        .benefits-list {
+            list-style: none;
+        }
+        
+        .benefits-list li {
+            padding: 15px 0;
+            padding-left: 40px;
+            position: relative;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00d084;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        /* What's Inside Section */
+        .inside {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .inside h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 50px;
+        }
+        
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .chapter-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .chapter-number {
+            background: #f7931a;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .chapter-card h3 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 50px;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+        }
+        
+        .testimonial-card:before {
+            content: """;
+            font-size: 4rem;
+            color: #f7931a;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            opacity: 0.3;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+        
+        .testimonial-result {
+            color: #00d084;
+            font-weight: bold;
+        }
+        
+        /* Offer Section */
+        .offer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .offer h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .price-box {
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 40px 60px;
+            border-radius: 20px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+        
+        .current-price {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00d084;
+        }
+        
+        .price-note {
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .guarantee {
+            background: rgba(0,208,132,0.2);
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .guarantee h3 {
+            color: #00d084;
+            margin-bottom: 10px;
+        }
+        
+        /* FAQ Section */
+        .faq {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .faq h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 50px;
+        }
+        
+        .faq-item {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+        
+        .faq-item h3 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            background: linear-gradient(135deg, #f7931a 0%, #ff6b35 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .final-cta .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .urgency-box {
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        footer p {
+            opacity: 0.7;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .ebook-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .current-price {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>🚀 The Bitcoin Investor's Blueprint</h1>
+            <p class="subtitle">Your Complete Guide to Building Wealth with Bitcoin in 2024</p>
+            <div class="urgency">⚡ Bitcoin Just Hit $100K — The Window is Open NOW</div>
+            <br>
+            <a href="#offer" class="cta-button">Get Instant Access →</a>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="container">
+            <h2>Are You Making These Critical Mistakes?</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>❌ Watching from the Sidelines</h3>
+                    <p>Every day you wait, you're missing the greatest wealth transfer in human history. Bitcoin has outperformed every major asset class for the past decade.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>❌ Paralyzed by Confusion</h3>
+                    <p>Wallets, exchanges, private keys, blockchain... it's overwhelming. Most people give up before they even start, leaving life-changing profits on the table.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>❌ Making Costly Beginner Errors</h3>
+                    <p>Without proper guidance, new investors lose thousands to scams, high fees, and emotional trading decisions. One mistake can wipe out your entire investment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Opportunity Section -->
+    <section class="opportunity">
+        <div class="container">
+            <h2>Why Bitcoin RIGHT NOW Is Different</h2>
+            <p style="text-align: center; font-size: 1.2rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">
+                We're witnessing a historic convergence of factors that make this the most important moment in Bitcoin's history...
+            </p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">$100K+</span>
+                    <div class="stat-label">Bitcoin Just Smashed All-Time Highs</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">11</span>
+                    <div class="stat-label">Bitcoin ETFs Now Approved (Institutional Money Flooding In)</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">84%</span>
+                    <div class="stat-label">Of All Bitcoin Already Mined (Supply Shock Incoming)</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">4 Years</span>
+                    <div class="stat-label">Since Last Halving (Historical Bull Run Pattern)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution">
+        <div class="container">
+            <h2>Introducing: Your Bitcoin Success Roadmap</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto;">
+                Everything you need to go from complete beginner to confident Bitcoin investor — without the confusion, fear, or costly mistakes.
+            </p>
+            <div class="ebook-showcase">
+                <div class="ebook-cover">
+                    <h3>📘 The Bitcoin Investor's Blueprint</h3>
+                    <p class="subtitle">From Zero to Your First Bitcoin in 7 Days</p>
+                </div>
+                <div>
+                    <ul class="benefits-list">
+                        <li>Step-by-step setup guide (no tech skills required)</li>
+                        <li>How to buy Bitcoin safely and securely</li>
+                        <li>Storage strategies that keep your investment protected</li>
+                        <li>Tax implications explained in plain English</li>
+                        <li>When to buy, when to hold, when to sell</li>
+                        <li>Avoiding scams and common pitfalls</li>
+                        <li>Building a long-term wealth strategy</li>
+                        <li>Bonus: 2024 Market Outlook & Predictions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Inside Section -->
+    <section class="inside">
+        <div class="container">
+            <h2>Here's Exactly What You'll Learn</h2>
+            <div class="chapters-grid">
+                <div class="chapter-card">
+                    <div class="chapter-number">1</div>
+                    <h3>Bitcoin Decoded</h3>
+                    <p>Understand what Bitcoin actually is, why it matters, and why the world's smartest investors are going all-in. No technical jargon — just clear explanations.</p>
+                </div>
+                <div class="chapter-card">
+                    <div class="chapter-number">2</div>
+                    <h3>Your First Bitcoin Purchase</h3>
+                    <p>The exact platforms to use, how to verify your identity, linking your bank account, and making your first purchase in under 30 minutes.</p>
+                </div>
+                <div class="chapter-card">
+                    <div class="chapter-number">3</div>
+                    <h3>Fort Knox Security</h3>
+                    <p>Hot wallets vs cold storage, hardware wallets explained, backup strategies, and how to sleep soundly knowing your Bitcoin is safe.</p>
+                </div>
+                <div class="chapter-card">
+                    <div class="chapter-number">4</div>
+                    <h3>The Investor's Mindset</h3>
+                    <p>How to think like a successful Bitcoin investor. Managing emotions, ignoring FUD, and building conviction for the long term.</p>
+                </div>
+                <div class="chapter-card">
+                    <div class="chapter-number">5</div>
+                    <h3>Advanced Strategies</h3>
+                    <p>Dollar-cost averaging, portfolio allocation, taking profits, and tax-efficient strategies the pros use.</p>
+                </div>
+                <div class="chapter-card">
+                    <div class="chapter-number">6</div>
+                    <h3>The 2024 Roadmap</h3>
+                    <p>What's coming next, institutional adoption trends, regulatory landscape, and how to position yourself for maximum gains.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>What Early Readers Are Saying</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I was terrified of Bitcoin. This book made it so simple. I bought my first $500 worth last month and I'm already up 23%. Wish I'd found this years ago!"</p>
+                    <p class="testimonial-author">— Michael R.</p>
+                    <p class="testimonial-result">First-time investor, up 23%</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The security chapter alone saved me from a scam that would have cost me $2,000. This book pays for itself 100 times over."</p>
+                    <p class="testimonial-author">— Sarah K.</p>
+                    <p class="testimonial-result">Avoided $2K scam</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"I've been 'meaning to get into Bitcoin' for 3 years. This finally got me off the fence. Best $47 I've ever spent on my financial education."</p>
+                    <p class="testimonial-author">— David L.</p>
+                    <p class="testimonial-result">Finally took action</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offer Section -->
+    <section class="offer" id="offer">
+        <div class="container">
+            <h2>Your Investment in Financial Freedom</h2>
+            <p style="font-size: 1.2rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">
+                Consider this: The knowledge in this book could help you avoid a single $100 mistake. Or help you catch the next 10x move. What's that worth?
+            </p>
+            <div class="price-box">
+                <p class="old-price">Regular Price: $197</p>
+                <p class="current-price">$47</p>
+                <p class="price-note">One-time payment. Instant digital delivery.</p>
+            </div>
+            <br>
+            <a href="#checkout" class="cta-button">Get The Bitcoin Blueprint Now →</a>
+            <div class="guarantee">
+                <h3>🛡️ 60-Day Money-Back Guarantee</h3>
+                <p>Read the entire book. If you don't feel 100% confident buying, storing, and investing in Bitcoin, email us for a full refund. No questions asked.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>Do I need any technical knowledge?</h3>
+                <p>Not at all. This book is written for complete beginners. If you can use a smartphone and a banking app, you have all the technical skills you need.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How much money do I need to start?</h3>
+                <p>You can start with as little as $10. The book teaches you strategies that work whether you're investing $100 or $100,000.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Isn't it too late to invest in Bitcoin?</h3>
+                <p>People have been saying that since Bitcoin was $1. At $100K+, we're still in the early innings. Institutional adoption is just beginning. The real question is: where will you be in 5 years if you DON'T start now?</p>
+            </div>
+            <div class="faq-item">
+                <h3>What format is the book?</h3>
+                <p>Instant PDF download. Read on any device — phone, tablet, computer, or print it out. You'll have access within 2 minutes of purchase.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>The Decision That Changes Everything</h2>
+            <p class="subtitle">Every day you wait is a day the market moves without you.</p>
+            <div class="urgency-box">
+                <p style="font-size: 1.2rem; margin-bottom: 10px;">⏰ Limited Time Launch Price: $47</p>
+                <p>Price increases to $97 when the timer hits zero</p>
+            </div>
+            <br>
+            <a href="#checkout" class="cta-button">Yes! Give Me The Blueprint →</a>
+            <p style="margin-top: 30px; opacity: 0.9;">
+                🔒 Secure checkout. Instant access. 60-day guarantee.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2024 The Bitcoin Investor's Blueprint. All rights reserved.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">This is not financial advice. Bitcoin is a volatile asset. Only invest what you can afford to lose.</p>
+        </div>
+    </footer>
+</body>
+</html>

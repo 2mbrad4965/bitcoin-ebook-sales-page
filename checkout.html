@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | The Bitcoin Investor's Blueprint</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bitcoin-orange: #f7931a;
+            --dark-bg: #0a0a0f;
+            --card-bg: #12121a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent-green: #00d084;
+            --accent-red: #ff4757;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(247, 147, 26, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(247, 147, 26, 0); }
+        }
+
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .checkout-header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .checkout-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .secure-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-green);
+            font-size: 0.9rem;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step.completed {
+            opacity: 1;
+            color: var(--accent-green);
+        }
+
+        .step-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .step.active .step-number {
+            background: var(--bitcoin-orange);
+            border-color: var(--bitcoin-orange);
+        }
+
+        .step.completed .step-number {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        /* Main Form Area */
+        .checkout-main {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .form-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .form-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-section h2 .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(247, 147, 26, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--bitcoin-orange);
+            box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Step 2 - Payment */
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method.active {
+            border-color: var(--bitcoin-orange);
+            background: rgba(247, 147, 26, 0.1);
+        }
+
+        .payment-method .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #card-element {
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        #card-errors {
+            color: var(--accent-red);
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--accent-green), #00b068);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 208, 132, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Sidebar */
+        .checkout-sidebar {
+            animation: slideIn 0.5s ease-out 0.2s both;
+        }
+
+        .order-summary {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .order-summary h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .product-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--bitcoin-orange), #ff6b35);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .product-details h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-details p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .price-breakdown {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .price-row.discount {
+            color: var(--accent-green);
+        }
+
+        .price-row.total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 1rem;
+        }
+
+        .guarantee-box {
+            background: rgba(0, 208, 132, 0.1);
+            border: 1px solid rgba(0, 208, 132, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .guarantee-box p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Testimonials in sidebar */
+        .sidebar-testimonial {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sidebar-testimonial p {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-testimonial .author {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .nav-buttons button {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--bitcoin-orange), #ff6b35);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(247, 147, 26, 0.4);
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 4rem 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .success-message h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-message p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: linear-gradient(135deg, var(--accent-green), #00b068);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 208, 132, 0.4);
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-sidebar {
+                order: -1;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <!-- Header -->
+        <div class="checkout-header">
+            <h1>🚀 Complete Your Order</h1>
+            <div class="secure-badge">
+                🔒 Secure 256-bit SSL Encryption
+            </div>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step active" id="step1-indicator">
+                <div class="step-number">1</div>
+                <span>Your Info</span>
+            </div>
+            <div class="step" id="step2-indicator">
+                <div class="step-number">2</div>
+                <span>Payment</span>
+            </div>
+            <div class="step" id="step3-indicator">
+                <div class="step-number">3</div>
+                <span>Download</span>
+            </div>
+        </div>
+
+        <!-- Step 1: Customer Info -->
+        <div class="checkout-main" id="step1">
+            <div class="form-section">
+                <h2><span class="icon">👤</span> Step 1: Your Information</h2>
+                <form id="customer-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number (optional)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    <button type="submit" class="submit-btn">Continue to Payment →</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div class="checkout-main hidden" id="step2">
+            <div class="form-section">
+                <h2><span class="icon">💳</span> Step 2: Payment Details</h2>
+
+                <div class="payment-methods">
+                    <div class="payment-method active" data-method="card">
+                        <div class="icon">💳</div>
+                        <div>Card</div>
+                    </div>
+                    <div class="payment-method" data-method="crypto">
+                        <div class="icon">₿</div>
+                        <div>Crypto</div>
+                    </div>
+                </div>
+
+                <form id="payment-form">
+                    <div id="card-payment">
+                        <div class="form-group">
+                            <label>Card Information</label>
+                            <div id="card-element"></div>
+                            <div id="card-errors"></div>
+                        </div>
+                    </div>
+
+                    <div id="crypto-payment" class="hidden">
+                        <div class="form-group">
+                            <label>Select Cryptocurrency</label>
+                            <div class="payment-methods">
+                                <div class="payment-method active">
+                                    <div class="icon">₿</div>
+                                    <div>Bitcoin</div>
+                                </div>
+                                <div class="payment-method">
+                                    <div class="icon">Ξ</div>
+                                    <div>Ethereum</div>
+                                </div>
+                                <div class="payment-method">
+                                    <div class="icon">◈</div>
+                                    <div>USDC</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Wallet Address (for receipt)</label>
+                            <input type="text" placeholder="Enter your wallet address">
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-secondary" onclick="goToStep(1)">← Back</button>
+                        <button type="submit" class="btn-primary" id="submit-payment">Complete Purchase →</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div class="checkout-main hidden" id="step3">
+            <div class="success-message">
+                <div class="success-icon">✓</div>
+                <h2>Welcome to the Future!</h2>
+                <p>Your order is complete. Check your email for your download link, or download now:</p>
+                <a href="#" class="download-btn">📥 Download Your Blueprint</a>
+                <p style="margin-top: 2rem; font-size: 0.9rem;">A confirmation email has been sent to <span id="confirmation-email"></span></p>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="checkout-sidebar">
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="product-item">
+                    <div class="product-image">📘</div>
+                    <div class="product-details">
+                        <h4>The Bitcoin Investor's Blueprint</h4>
+                        <p>2026 Edition • PDF + Bonus Materials</p>
+                    </div>
+                </div>
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>Original Price</span>
+                        <span style="text-decoration: line-through;">$97.00</span>
+                    </div>
+                    <div class="price-row discount">
+                        <span>Limited Time Discount</span>
+                        <span>-$70.00</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span>$27.00</span>
+                    </div>
+                </div>
+                <div class="guarantee-box">
+                    <strong>🛡️ 30-Day Guarantee</strong>
+                    <p>Not satisfied? Full refund, no questions asked.</p>
+                </div>
+            </div>
+
+            <div class="sidebar-testimonial">
+                <p>"I was hesitant to spend $27, but this guide paid for itself in the first week. Avoided a scam that would have cost me $500."</p>
+                <div class="author">— Michael R., Verified Buyer</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stripe setup (replace with your publishable key)
+        const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_KEY_HERE');
+        const elements = stripe.elements();
+        const cardElement = elements.create('card', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#ffffff',
+                    '::placeholder': { color: '#a0a0b0' },
+                },
+            },
+        });
+
+        // Only mount if card element exists
+        if (document.getElementById('card-element')) {
+            cardElement.mount('#card-element');
+        }
+
+        // Handle card errors
+        cardElement.addEventListener('change', (event) => {
+            const errorDiv = document.getElementById('card-errors');
+            if (event.error) {
+                errorDiv.textContent = event.error.message;
+            } else {
+                errorDiv.textContent = '';
+            }
+        });
+
+        // Step navigation
+        let currentStep = 1;
+        let customerData = {};
+
+        function goToStep(step) {
+            // Hide all steps
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+
+            // Update indicators
+            document.getElementById('step1-indicator').classList.remove('active', 'completed');
+            document.getElementById('step2-indicator').classList.remove('active', 'completed');
+            document.getElementById('step3-indicator').classList.remove('active', 'completed');
+
+            // Show current step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+
+            // Update indicators
+            for (let i = 1; i < step; i++) {
+                document.getElementById(`step${i}-indicator`).classList.add('completed');
+            }
+            document.getElementById(`step${step}-indicator`).classList.add('active');
+
+            currentStep = step;
+        }
+
+        // Step 1: Customer Info Form
+        document.getElementById('customer-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            customerData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+            };
+            goToStep(2);
+        });
+
+        // Payment method toggle
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                const parent = method.parentElement;
+                parent.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                method.classList.add('active');
+
+                const methodType = method.dataset.method;
+                if (methodType === 'card') {
+                    document.getElementById('card-payment').classList.remove('hidden');
+                    document.getElementById('crypto-payment').classList.add('hidden');
+                } else if (methodType === 'crypto') {
+                    document.getElementById('card-payment').classList.add('hidden');
+                    document.getElementById('crypto-payment').classList.remove('hidden');
+                }
+            });
+        });
+
+        // Step 2: Payment Form
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-payment');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            // Simulate payment processing (replace with actual Stripe integration)
+            setTimeout(() => {
+                document.getElementById('confirmation-email').textContent = customerData.email;
+                goToStep(3);
+
+                // TODO: Integrate with your backend to:
+                // 1. Create Stripe payment intent
+                // 2. Confirm card payment
+                // 3. Send confirmation email
+                // 4. Grant download access
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
